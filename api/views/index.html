@@ -1,0 +1,96 @@
+<head>
+	<link rel="stylesheet" href="css/home.css" type="text/css" />
+	<link rel="stylesheet" href="css/index.css" type="text/css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+	</script>
+	<title>Home</title>
+</head>
+
+<body>
+  <div class="nav">
+    <ul id="navbar">
+      <li class="active nav-item"><a href="/">Home</a></li>
+      <li class="nav-item"><a href="/weeklySermon.html">Weekly Sermon</a></li>
+      <li class="nav-item"><a href="/events.html">Events</a></li>
+      <li class="nav-item"><a href="/sermons.html">Sermons</a></li>
+    </ul>
+  </div>
+  <div class="container">
+    <div class="backbox">
+      <div class="loginMsg">
+        <div class="textcontent">
+          <p class="title">Don't have an account?</p>
+          <p>Sign up to access the dashboard.</p>
+          <button id="switch1">Sign Up</button>
+        </div>
+      </div>
+      <div class="signupMsg visibility">
+        <div class="textcontent">
+          <p class="title">Have an account?</p>
+          <p>Log in to see the dashboard.</p>
+          <button id="switch2">LOG IN</button>
+        </div>
+      </div>
+    </div>
+    <!-- backbox -->
+
+    <div class="frontbox">
+      <div class="login">
+        <h2>LOG IN</h2>
+        <div class="inputbox">
+          <input type="text" name="email" placeholder="  EMAIL">
+          <input type="password" name="password" placeholder="  PASSWORD">
+        </div>
+        <p>FORGET PASSWORD?</p>
+        <button>LOG IN</button>
+      </div>
+
+      <div class="signup hide">
+        <h2>SIGN UP</h2>
+        <div class="inputbox">
+          <input type="text" name="fullname" placeholder="  FULLNAME">
+          <input type="text" name="email" placeholder="  EMAIL">
+          <input type="password" name="password" placeholder="  PASSWORD">
+        </div>
+        <button>SIGN UP</button>
+      </div>
+
+    </div>
+    <!-- frontbox -->
+  </div>
+  <script>
+  var $loginMsg = $('.loginMsg'),
+  $login = $('.login'),
+  $signupMsg = $('.signupMsg'),
+  $signup = $('.signup'),
+  $frontbox = $('.frontbox');
+
+  $('#switch1').on('click', function() {
+    $loginMsg.toggleClass("visibility");
+    $frontbox.addClass("moving");
+    $signupMsg.toggleClass("visibility");
+  
+    $signup.toggleClass('hide');
+    $login.toggleClass('hide');
+  });
+  
+  $('#switch2').on('click', function() {
+    $loginMsg.toggleClass("visibility");
+    $frontbox.removeClass("moving");
+    $signupMsg.toggleClass("visibility");
+  
+    $signup.toggleClass('hide');
+    $login.toggleClass('hide');
+  });
+  
+  setTimeout(function(){
+    $('#switch1').click();
+  });
+  
+  setTimeout(function(){
+    $('#switch2').click();
+  });
+
+  </script>
+</body>

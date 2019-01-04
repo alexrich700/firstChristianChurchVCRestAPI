@@ -1,3 +1,7 @@
+body {
+    background-color: #f7f7f7 !important;
+}
+
 .nav {
     display: table;
     margin: 0 auto;
@@ -5,12 +9,12 @@
 
 #navbar {
     height: 60px;
-    margin: 10px 10px 0 10px;
-    width: 100vw;
+    margin: 10px auto;
+    width: 80vw;
     padding: 0;
     background: #222;
     font-family: 'Oswald', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 300;
     text-align: center;
 }

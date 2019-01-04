@@ -1,12 +1,6 @@
-var Users = require('../models/users.js');
-var MD5 = require("md5");
-var JWT = require("jsonwebtoken");
-var ExtractJwt = require('passport-jwt').ExtractJwt;
-var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.issuer = 'accounts.https://rest-api-alexrich700.c9users.io/';
-opts.audience = 'https://rest-api-alexrich700.c9users.io/';
-opts.secretOrKey = 'secret';
+const Users = require('../models/users.js');
+const JWT = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.signin = async function(req, res, next) {
   // finding a user
@@ -14,25 +8,18 @@ exports.signin = async function(req, res, next) {
     let user = await Users.findOne({
       email: req.body.email
     });
-    let { first_name, last_name, email, level } = user;
+    let { name, email } = user;
     let isMatch = await user.comparePassword(req.body.password);
     if (isMatch) {
       let token = JWT.sign(
         {
-          first_name, 
-          last_name, 
+          name,
           email, 
-          level
+          expiresIn: 604800
         },
-        opts.secretOrKey
+        process.env.SECRET_KEY
       );
-      return res.status(200).json({
-        first_name, 
-        last_name, 
-        email, 
-        level,
-        token
-      });
+      return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
     } else {
       return next({
         status:403,
@@ -49,25 +36,17 @@ exports.signin = async function(req, res, next) {
 exports.signup = async function (req, res, next) {
     try {
         let user = await Users.create(req.body);
-        let{ first_name, last_name, email, level, password } = user;
+        let{ name, email, password } = user;
         let token = JWT.sign(
           {
-            first_name, 
-            last_name, 
+            name,
             email, 
-            level,
-            password
-          },
-          opts.secretOrKey
-        );
-        return res.status(200).json({
-            first_name, 
-            last_name, 
-            email, 
-            level,
             password,
-            token
-        });
+            expiresIn: 604800
+          },
+          process.env.SECRET_KEY
+        );
+        return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
         } catch (err) {
         if (err.code === 11000) {
             err;
@@ -77,4 +56,32 @@ exports.signup = async function (req, res, next) {
             err
         });
     }
+};
+
+exports.logout = async function (req, res, next) {
+  try {
+    res.cookie('accesstoken', {expires: Date.now()});
+  } catch (err) {
+    if (err.code === 11000) {
+      err;
+    }
+    return next({
+      status: 400,
+      err
+    });
+  }
+  res.redirect('/');
+};
+
+exports.passwordReset = async function (req, res, next) {
+  try {
+    let user = await Users.findOne({
+      email: req.body.email
+    });
+    
+    let token = JWT.encode(user, process.env.SECRET_KEY);
+    
+  } catch (err) {
+    err;
+  }
 };

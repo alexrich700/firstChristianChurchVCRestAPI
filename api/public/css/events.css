@@ -37,7 +37,7 @@ input {
 	border: none;
 	border-bottom: 1px solid #34495e;
 	outline: none;
-	padding: 20px;
+	padding: 20px 0;
 	color: #34495e;
 	text-align: center;
 	font-size: 28px !important;
@@ -53,8 +53,8 @@ input {
 /************************************************EVENT STYLES****************************************/
 .event-text{
     text-align: center;
-    border: 1px solid #f7f7f7;
-    box-shadow: 2.5px 5px #D8D8D8;
+    border: 2px solid #fff;
+    box-shadow: 2.2px 4px #D8D8D8;
     border-radius: 25px;
     margin: 50px auto 25px auto;
     max-width: 300px !important;

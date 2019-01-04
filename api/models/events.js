@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var textSchema = new mongoose.Schema({
+var eventSchema = new mongoose.Schema({
     title: {
         type: String
         // required: 'Cannot be blank!'
@@ -19,6 +19,6 @@ var textSchema = new mongoose.Schema({
     }
 });
 
-var Event = mongoose.model('Event', textSchema);
+var Event = mongoose.model('Event', eventSchema);
 
 module.exports = Event;

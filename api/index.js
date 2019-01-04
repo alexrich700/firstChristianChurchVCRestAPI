@@ -1,23 +1,27 @@
-var express = require('express'),
+const express = require('express'),
     app = express(),
     port = process.env.PORT || 3000,
     bodyParser = require('body-parser'),
-    mongoose = require('mongoose');
-
-var textRoutes = require("./routes/text");
-var eventRoutes = require("./routes/event");
-const { loginRequired, ensureCorrectUser } = require("./middleware/auth");
-var videoRoutes = require("./routes/videos");
-var userRoutes = require("./routes/users");
+    mongoose = require('mongoose'),
+    cookieParser = require('cookie-parser');
+const textRoutes = require("./routes/text"),
+    eventRoutes = require("./routes/event"),
+    { loginRequired } = require("./middleware/auth"),
+    userRoutes = require("./routes/users"),
+    sermonRoutes = require("./routes/sermons");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect('mongodb://localhost/text-api', (error)=>{
-  if(error) console.log(error);
+// COOKIES
+app.use(cookieParser());
+
+mongoose.Promise = Promise;
+mongoose.connect('mongodb://alexrich700:douglas1969@ds131932.mlab.com:31932/fcc-vc-rest-api', {
+    keepAlive: true
 });
 
-app.use(express.static(__dirname + '/views'));
+// app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 
 app.all('/*', function (req, res, next) {
@@ -27,26 +31,54 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////ROUTES///////////////////////////
+
 app.get('/', function(req, res){
-    res.sendFile("index");
+    res.sendFile(__dirname + '/views'+ "/index.html");
 });
 
-app.get('/weeklySermon', ensureCorrectUser, function(req, res){
-    res.sendFile("weeklySermon");
+app.get('/weeklySermon', loginRequired, function(req, res){
+    res.sendFile(__dirname + '/views'+ "/weeklySermon.html");
 });
 
 app.get('/events', loginRequired, function(req, res){
-    res.sendFile("events");
+    res.sendFile(__dirname + '/views'+ "/events.html");
 });
 
 app.get('/sermons', loginRequired, function(req, res){
-    res.sendFile("sermons");
+    res.sendFile(__dirname + '/views'+ "/sermons.html");
+});
+
+app.get('/login', function(req, res){
+    res.sendFile(__dirname + '/views'+ "/login.html");
+});
+
+app.get('/passwordreset', function(req, res){
+    res.sendFile(__dirname + '/views'+ "/passwordReset.html");
 });
 
 app.use('/api/text', textRoutes);
 app.use('/api/events', eventRoutes);
-app.use('/api/videos', videoRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/sermons', sermonRoutes);
 
 app.listen(port, function(){
     console.log("APP IS RUNNING ON PORT " + process.env.PORT);

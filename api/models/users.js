@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const deepPopulate = require("mongoose-deep-populate")(Mongoose);
 
 const Users = Mongoose.Schema({
+    name:{type:String, required: true},
     email:{type:String, unique: true, required:true},
     password:{type:String, required:true}
 });

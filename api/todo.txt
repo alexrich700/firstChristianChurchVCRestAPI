@@ -1,5 +1,0 @@
-1. Upload title along with video
-2. routes/videos.js is changed for title insertion
-3. Fix styling for sermons.html
-4. Implement uploading from front end on sermons.html (**Creating on enter keyword started on sermons.js**)
-5. Create model for sermons with video upload

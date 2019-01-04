@@ -2,17 +2,20 @@ var express = require("express");
 var mongoose = require("mongoose");
 var Router = express.Router();
 var JWT = require("jsonwebtoken");
-const { signup, signin } = require("../helpers/auth");
-const { loginRequired, ensureCorrectUser } = require("../middleware/auth");
-const { getUsers, getUser, updateUser } = require("../helpers/users");
+const { signup, signin, logout, passwordReset } = require("../helpers/auth");
+const { loginRequired } = require("../middleware/auth");
+const { getUsers, getUser, updateUser, getCurrentUser } = require("../helpers/users");
+mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost/text-api', (error)=>{
-    if(error) console.log(error);
-});
+Router.get("/getcurrentuser", getCurrentUser);
 
 Router.post("/signup", signup);
 
 Router.post("/login", signin);
+
+Router.get("/logout", logout);
+
+Router.post("/passwordreset", passwordReset);
 
 Router.put("/", loginRequired, updateUser);
 

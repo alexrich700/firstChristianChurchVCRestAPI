@@ -1,10 +1,19 @@
 var Users = require('../models/users.js');
-var JWT = require("jsonwebtoken");
+var jwt = require("jsonwebtoken");
 
 exports.getUsers = async function (req, res, next) {
     try {
         let users = await Users.find();
         return res.status(200).json(users);
+    } catch (err) {
+        return next(err);
+    }
+};
+
+exports.getCurrentUser = async function (req, res, next) {
+    try {
+        let decoded = jwt.decode(req.cookies.accesstoken, process.env.SECRET_KEY);
+        res.json(decoded);
     } catch (err) {
         return next(err);
     }

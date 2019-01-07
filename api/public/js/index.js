@@ -4,6 +4,14 @@ $(document).ready(function(){
   
 });
 
+function login(form) {
+  // let email = form.email;
+  // let password = form.password
+  $.post('/api/user/login', form, function(data, status){
+    console.log(data, status)
+  })
+}
+
 function addCurrentUser(user) {
     if(user != null) {
         $('.container').addClass('hide');

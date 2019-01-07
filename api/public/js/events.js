@@ -20,25 +20,31 @@ function addEvents(a) {
 }
 
 function addEvent(a) {
-    var b = $('<div class="col-xl-3 col-md-6 col-xs-12 event-text"><h4 class="event-title">' + a.title + '</h4><span class="event-date">' + a.date + '</span></br><span class="event-location">' + a.location + '</span></br><img class="event-image img-fluid" src="' + a.image + '"><button class="delete btn btn-warning">Delete</button></div>');
+    let b = $('<div class="col-xl-3 col-md-6 col-xs-12 event-text"><h4 class="event-title">' + a.title + '</h4><span class="event-date">' + a.day + ' ' + a.date + '</span><br><span class="event-date">' + a.time + '</span><br><span class="event-location">' + a.location + '</span><br><img class="event-image img-fluid" src="' + a.image + '"><button class="delete btn btn-warning">Delete</button></div>');
     b.data("id", a._id);
     $(".list").append(b);
 }
 
 function createEvent() {
-    var a = $("#newTitleInput").val();
-    var b = $("#newDateInput").val();
-    var c = $("#newLocationInput").val();
-    var d = get_link;
+    let a = $("#newTitleInput").val();
+    let b = $("#newDayInput").val();
+    let c = $("#newDateInput").val();
+    let d = $("#newTimeInput").val();
+    let e = $("#newLocationInput").val();
+    let f = get_link;
     $.post("/api/events", {
         title: a,
-        date: b,
-        location: c,
-        image: d
+        day: b,
+        date: c,
+        time: d,
+        location: e,
+        image: f
     }).then(function(a) {
         $("#newTitleInput").val("");
         $("#newDateInput").val("");
         $("#newLocationInput").val("");
+        $("#newDayInput").val("");
+        $("#newTimeInput").val("");
         get_link = "";
         $(".none").removeClass("none").addClass("dropzone");
         $(".status").addClass("none");
@@ -49,8 +55,8 @@ function createEvent() {
 }
 
 function removeEvent(a) {
-    var b = a.data("id");
-    var c = "/api/events/" + b;
+    let b = a.data("id");
+    let c = "/api/events/" + b;
     $.ajax({
         method: "DELETE",
         url: c

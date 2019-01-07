@@ -10,7 +10,7 @@ function addCurrentUser(user) {
         var test = $('<div>Welcome ' + user.name + '</div>');
         var logoutBtn = $(
         ' <div class="col-md-12 bu"> ' +
-        '  <a class="button" href="https://rest-api-alexrich700.c9users.io/api/users/logout" role="button"> ' +
+        '  <a class="button" href="https://victoriafirstchristianchurch.net/api/users/logout" role="button"> ' +
         '	<span>Logout</span> ' +
         '	<div class="icon"> ' +
         '		<i class="fas fa-sign-out-alt"></i> ' +

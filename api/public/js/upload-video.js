@@ -370,7 +370,7 @@ function addSermon(sermon) {
     '<iframe src="https://www.youtube.com/embed/' 
     + sermon.video + 
     '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' +
-    '<div>' + sermon.title + sermon.description + '</div>' +
+    '<div class="sermon-title">' + sermon.title + '</div>' + '<div class="sermon-desc">' + sermon.description + '</div></div>' +
     '</div>');
     $(".list").append(b);
 }

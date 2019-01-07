@@ -413,3 +413,12 @@ iframe {
   margin-left: auto;
   display: block;
 }
+.sermon-title {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 600;
+}
+.sermon-desc {
+  font-size: 20px;
+  text-align: center;
+}

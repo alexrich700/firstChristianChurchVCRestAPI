@@ -4,17 +4,21 @@ var Users = require('../models/users.js');
 
 exports.loginRequired = function(req, res, next) {
   try {
+    console.log("ACCESSING")
     let token = '';
     const authcookie = req.cookies.accesstoken;
-    if (authcookie === undefined) {
+    if (authcookie === undefined && req.headers.authorization) {
       token = req.headers.authorization.split(" ")[1];
     } else {
-      token = authcookie;
+      res.redirect('/login')
+      return next();
     }
+    console.log(token)
     jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
       if (decoded) {
         next();
       } else {
+        console.log(err)
         res.redirect('/login');
         return next();
       }

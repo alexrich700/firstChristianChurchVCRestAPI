@@ -1,6 +1,9 @@
+const config = require('./config')
+
+
 const express = require('express'),
     app = express(),
-    port = process.env.PORT || 3000,
+    port = config.PORT,
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     cookieParser = require('cookie-parser');
@@ -10,6 +13,7 @@ const textRoutes = require("./routes/text"),
     userRoutes = require("./routes/users"),
     sermonRoutes = require("./routes/sermons");
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -17,8 +21,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://alexrich700:douglas1969@ds131932.mlab.com:31932/fcc-vc-rest-api', {
+mongoose.connect(config.MONGOURL, {
     keepAlive: true
+}).then(() => {
+    console.log("Successfully conntected to " + config.MONGOURL)
 });
 
 // app.use(express.static(__dirname + '/views'));
@@ -80,8 +86,8 @@ app.use('/api/events', eventRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/sermons', sermonRoutes);
 
-app.listen(port, function(){
-    console.log("APP IS RUNNING ON PORT " + process.env.PORT);
+app.listen(config.PORT, function(){
+    console.log("APP IS RUNNING ON PORT " + config.PORT);
 });
     
     

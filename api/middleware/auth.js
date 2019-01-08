@@ -1,4 +1,5 @@
-require("dotenv").load();
+const config = require('../config')
+
 var jwt = require("jsonwebtoken");
 var Users = require('../models/users.js');
 
@@ -6,7 +7,7 @@ exports.loginRequired = function(req, res, next) {
   console.log("ACCESSING")
   try {
     let token = req.cookies.accesstoken;
-    jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
+    jwt.verify(token, config.SECRET_KEY, function(err, decoded) {
       if (decoded) {
         next();
       } else {

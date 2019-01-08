@@ -26,5 +26,9 @@ RUN echo 'nb=`cat package.json | grep start | wc -l` && if test "$nb" = "0" ; th
 
 RUN echo 'npm install --production' >> /usr/bin/start.sh
 
+# Set env variables
+RUN echo 'export SECRET_KEY=16535641sdfvbb165181651981fdbv181651981gn981' >> /usr/bin/start.sh
+RUN echo 'export CLIENT_ID=365323935043-64f5mqsmokigutf35ceufj1gm7ohm1it.apps.googleusercontent.com' >> /usr/bin/start.sh
+RUN echo 'export MONGOURL=mongodb://alexrich700:douglas1969@ds131932.mlab.com:31932/fcc-vc-rest-api' >> /usr/bin/start.sh
 # npm start, make sure to have a start attribute in "scripts" in package.json
 RUN echo 'npm start' >> /usr/bin/start.sh

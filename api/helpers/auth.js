@@ -1,8 +1,10 @@
+const config = require('../config')
+
 const Users = require('../models/users.js');
 const JWT = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 
 exports.signin = async function(req, res, next) {
+  console.log(config.SECRET_KEY);
   // finding a user
   try {
     let user = await Users.findOne({
@@ -17,7 +19,7 @@ exports.signin = async function(req, res, next) {
           email, 
           expiresIn: 604800
         },
-        process.env.SECRET_KEY
+        config.SECRET_KEY
       );
       return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
     } else {
@@ -46,7 +48,7 @@ exports.signup = async function (req, res, next) {
             password,
             expiresIn: 604800
           },
-          process.env.SECRET_KEY
+          config.SECRET_KEY
         );
         return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
     } catch (err) {
@@ -82,7 +84,7 @@ exports.passwordReset = async function (req, res, next) {
       email: req.body.email
     });
     
-    let token = JWT.encode(user, process.env.SECRET_KEY);
+    let token = JWT.encode(user, config.SECRET_KEY);
     
   } catch (err) {
     err;

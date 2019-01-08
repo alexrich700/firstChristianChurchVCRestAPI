@@ -1,14 +1,25 @@
 $(document).ready(function(){
   $.getJSON("/api/users/getCurrentUser")
   .then(addCurrentUser);
-  
 });
 
 function login(form) {
-  // let email = form.email;
-  // let password = form.password
-  $.post('/api/user/login', form, function(data, status){
-    console.log(data, status)
+  $.ajax({
+    type: 'POST',
+    url: '/api/users/login',
+    data: $(form).serialize()
+  }).done(function() {
+    addCurrentUser({"name" :$(form.email).val()})
+  })
+}
+
+function signup(form) {
+  $.ajax({
+    type: 'POST',
+    url: '/api/users/signup',
+    data: $(form).serialize()
+  }).done(function(res){
+    console.log(res);
   })
 }
 
@@ -18,7 +29,7 @@ function addCurrentUser(user) {
         var test = $('<div>Welcome ' + user.name + '</div>');
         var logoutBtn = $(
         ' <div class="col-md-12 bu"> ' +
-        '  <a class="button" href="https://victoriafirstchristianchurch.net/api/users/logout" role="button"> ' +
+        '  <a class="button" href="/api/users/logout" role="button"> ' +
         '	<span>Logout</span> ' +
         '	<div class="icon"> ' +
         '		<i class="fas fa-sign-out-alt"></i> ' +
@@ -34,35 +45,35 @@ function addCurrentUser(user) {
 }
 
 
+
+var $loginMsg = $('.loginMsg'),
+    $login = $('.login'),
+    $signupMsg = $('.signupMsg'),
+    $signup = $('.signup'),
+    $frontbox = $('.frontbox');
   
-  var $loginMsg = $('.loginMsg'),
-      $login = $('.login'),
-      $signupMsg = $('.signupMsg'),
-      $signup = $('.signup'),
-      $frontbox = $('.frontbox');
+    $('#switch1').on('click', function() {
+      $loginMsg.toggleClass("visibility");
+      $frontbox.addClass("moving");
+      $signupMsg.toggleClass("visibility");
     
-      $('#switch1').on('click', function() {
-        $loginMsg.toggleClass("visibility");
-        $frontbox.addClass("moving");
-        $signupMsg.toggleClass("visibility");
-      
-        $signup.toggleClass('hide');
-        $login.toggleClass('hide');
-      });
-      
-      $('#switch2').on('click', function() {
-        $loginMsg.toggleClass("visibility");
-        $frontbox.removeClass("moving");
-        $signupMsg.toggleClass("visibility");
-      
-        $signup.toggleClass('hide');
-        $login.toggleClass('hide');
-      });
-      
-      setTimeout(function(){
-        $('#switch1').click();
-      });
-      
-      setTimeout(function(){
-        $('#switch2').click();
-      });
+      $signup.toggleClass('hide');
+      $login.toggleClass('hide');
+    });
+    
+    $('#switch2').on('click', function() {
+      $loginMsg.toggleClass("visibility");
+      $frontbox.removeClass("moving");
+      $signupMsg.toggleClass("visibility");
+    
+      $signup.toggleClass('hide');
+      $login.toggleClass('hide');
+    });
+    
+    setTimeout(function(){
+      $('#switch1').click();
+    });
+    
+    setTimeout(function(){
+      $('#switch2').click();
+    });

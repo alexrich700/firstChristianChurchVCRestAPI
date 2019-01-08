@@ -3,7 +3,6 @@ const config = require('./config')
 
 const express = require('express'),
     app = express(),
-    port = config.PORT,
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     cookieParser = require('cookie-parser');

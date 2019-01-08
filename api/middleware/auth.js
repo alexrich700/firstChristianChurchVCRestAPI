@@ -3,17 +3,9 @@ var jwt = require("jsonwebtoken");
 var Users = require('../models/users.js');
 
 exports.loginRequired = function(req, res, next) {
+  console.log("ACCESSING")
   try {
-    console.log("ACCESSING")
-    let token = '';
-    const authcookie = req.cookies.accesstoken;
-    if (authcookie === undefined && req.headers.authorization) {
-      token = req.headers.authorization.split(" ")[1];
-    } else {
-      res.redirect('/login')
-      return next();
-    }
-    console.log(token)
+    let token = req.cookies.accesstoken;
     jwt.verify(token, process.env.SECRET_KEY, function(err, decoded) {
       if (decoded) {
         next();
@@ -24,6 +16,8 @@ exports.loginRequired = function(req, res, next) {
       }
     });
   } catch (e) {
+    console.log(e)
+    res.redirect('/login')
     return next();
   }
 };

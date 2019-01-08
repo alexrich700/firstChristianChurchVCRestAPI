@@ -27,13 +27,15 @@ exports.signin = async function(req, res, next) {
       });
     }
   } catch (e) {
+    console.log(err)
     return next({ 
-        status: 403, message: e 
+        status: 500, message: e 
     });
   }
 };
 
 exports.signup = async function (req, res, next) {
+  console.log(req.body)
     try {
         let user = await Users.create(req.body);
         let{ name, email, password } = user;
@@ -47,14 +49,15 @@ exports.signup = async function (req, res, next) {
           process.env.SECRET_KEY
         );
         return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
-        } catch (err) {
-        if (err.code === 11000) {
-            err;
-        }
-        return next({
-            status: 400,
-            err
-        });
+    } catch (err) {
+      console.log(err)
+      if (err.code === 11000) {
+          err;
+      }
+      return next({
+          status: 400,
+          err
+      });
     }
 };
 

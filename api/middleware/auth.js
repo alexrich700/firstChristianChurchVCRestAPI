@@ -4,14 +4,12 @@ var jwt = require("jsonwebtoken");
 var Users = require('../models/users.js');
 
 exports.loginRequired = function(req, res, next) {
-  console.log("ACCESSING")
   try {
     let token = req.cookies.accesstoken;
     jwt.verify(token, config.SECRET_KEY, function(err, decoded) {
       if (decoded) {
         next();
       } else {
-        console.log(err)
         res.redirect('/login');
         return next();
       }

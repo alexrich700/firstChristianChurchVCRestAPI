@@ -4,12 +4,16 @@ const Users = require('../models/users.js');
 const JWT = require("jsonwebtoken");
 
 exports.signin = async function(req, res, next) {
-  console.log(config.SECRET_KEY);
   // finding a user
   try {
     let user = await Users.findOne({
       email: req.body.email
     });
+    if (user === null || user === undefined) {
+      return next(
+        res.status(403).redirect('/login')
+      )
+    }
     let { name, email } = user;
     let isMatch = await user.comparePassword(req.body.password);
     if (isMatch) {
@@ -29,15 +33,14 @@ exports.signin = async function(req, res, next) {
       });
     }
   } catch (e) {
-    console.log(err)
+    console.log(e)
     return next({ 
-        status: 500, message: e 
+        status: 500, message: "Unable to login"
     });
   }
 };
 
 exports.signup = async function (req, res, next) {
-  console.log(req.body)
     try {
         let user = await Users.create(req.body);
         let{ name, email, password } = user;

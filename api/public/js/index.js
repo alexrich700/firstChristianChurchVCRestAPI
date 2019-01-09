@@ -19,7 +19,7 @@ function signup(form) {
     url: '/api/users/signup',
     data: $(form).serialize()
   }).done(function(res){
-    console.log(res);
+    addCurrentUser({"name" : $(form.name).val()})
   })
 }
 

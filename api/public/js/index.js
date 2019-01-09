@@ -3,25 +3,35 @@ $(document).ready(function(){
   .then(addCurrentUser);
 });
 
-function login(form) {
-  $.ajax({
-    type: 'POST',
-    url: '/api/users/login',
-    data: $(form).serialize()
-  }).done(function() {
-    addCurrentUser({"name" :$(form.email).val()})
-  })
+
+function sendSignUp(){
+  document.getElementById('sbm-signup-form').submit();        
 }
 
-function signup(form) {
-  $.ajax({
-    type: 'POST',
-    url: '/api/users/signup',
-    data: $(form).serialize()
-  }).done(function(res){
-    addCurrentUser({"name" : $(form.name).val()})
-  })
+function sendLogin() {
+  document.getElementById('sbm-login-form').submit();
 }
+
+
+// function login(form) {
+//   $.ajax({
+//     type: 'POST',
+//     url: '/api/users/login',
+//     data: $(form).serialize()
+//   }).done(function() {
+//     addCurrentUser({"name" :$(form.email).val()})
+//   })
+// }
+
+// function signup(form) {
+//   $.ajax({
+//     type: 'POST',
+//     url: '/api/users/signup',
+//     data: $(form).serialize()
+//   }).done(function(res){
+//     addCurrentUser({"name" : $(form.name).val()})
+//   })
+// }
 
 function addCurrentUser(user) {
     if(user != null) {

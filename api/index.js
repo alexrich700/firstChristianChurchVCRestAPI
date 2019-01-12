@@ -1,6 +1,5 @@
 const config = require('./config')
 
-
 const express = require('express'),
     app = express(),
     bodyParser = require('body-parser'),
@@ -86,7 +85,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/sermons', sermonRoutes);
 
 app.listen(config.PORT, function(){
-    console.log("APP IS RUNNING ON PORT " + config.PORT);
+    console.log("APP IS RUNNING ON PORT " + config.PORT)
+    console.log("CONGIF ", config);
 });
     
     

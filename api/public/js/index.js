@@ -1,3 +1,5 @@
+// import { url } from "inspector";
+
 $(document).ready(function(){
   $.getJSON("/api/users/getCurrentUser")
   .then(addCurrentUser);
@@ -10,6 +12,35 @@ function sendSignUp(){
 
 function sendLogin() {
   document.getElementById('sbm-login-form').submit();
+}
+
+function sendResetEmail() {
+  document.getElementById("form-reset-pass").submit();
+}
+
+function TEST() {
+  const url = new URL(window.location.href)
+  const token = url.searchParams.get('token')
+
+  console.log($('#reset-pass-form').serialize())
+  console.log(token)
+}
+
+function sendResetPassword() {
+  const url = new URL(window.location.href)
+  const token = url.searchParams.get('token')
+  $.ajax({
+    type: 'POST',
+    url: `/api/users/passwordreset?token=${token}`,
+    data: $('#reset-pass-form').serialize()
+  }).done(function(data){
+    alert(data)
+    addCurrentUser({"name" : $('#reset-pass-form'.email).val()})
+    window.location.href = "/"
+    return
+  }).fail(function(data){
+    alert(data)
+  })
 }
 
 

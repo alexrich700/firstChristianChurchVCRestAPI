@@ -1,5 +1,6 @@
-var Users = require('../models/users.js');
-var jwt = require("jsonwebtoken");
+const Users = require('../models/users.js');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 exports.getUsers = async function (req, res, next) {
     try {
@@ -47,3 +48,18 @@ exports.deleteUser = async function (req, res, next) {
         return next(err);
       }
 };
+
+exports.updatePassword = async function (req, res, next) {
+    try {
+        let data = req.body
+        data.password = await bcrypt.hash(req.body.password, 10);
+
+        console.log("UPDATING", data)
+
+        await Users.findOneAndUpdate({email: req.body.email}, data)
+        return res.status(200).send("Updated password. Please login with new password.")
+    } catch (err) {
+        res.status(500)
+        return next(err)
+    }
+}

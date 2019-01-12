@@ -1,7 +1,12 @@
 const config = require('../config')
 
-const Users = require('../models/users.js');
 const JWT = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail');
+  sgMail.setApiKey(config.SENDGRID_API);
+
+const Users = require('../models/users.js');
+const { updatePassword } = require('./users')
+
 
 exports.signin = async function(req, res, next) {
   // finding a user
@@ -10,9 +15,8 @@ exports.signin = async function(req, res, next) {
       email: req.body.email
     });
     if (user === null || user === undefined) {
-      return next(
-        res.status(403).redirect('/login')
-      )
+      return res.status(403).redirect('/login')
+      
     }
     let { name, email } = user;
     let isMatch = await user.comparePassword(req.body.password);
@@ -27,16 +31,11 @@ exports.signin = async function(req, res, next) {
       );
       return res.status(200).cookie('accesstoken', token, {expire : new Date() + 86400}).redirect('/');
     } else {
-      return next({
-        status:403,
-        message: "j"
-      });
+      return res.status(401).send("Unable to login. Please try again.");
     }
   } catch (e) {
     console.log(e)
-    return next({ 
-        status: 500, message: "Unable to login"
-    });
+    return res.status(500).send("Unable to login. Please try again.");
   }
 };
 
@@ -81,15 +80,46 @@ exports.logout = async function (req, res, next) {
   res.redirect('/');
 };
 
-exports.passwordReset = async function (req, res, next) {
+
+exports.sendPasswordResetLink = async function (req, res) {
+    
   try {
-    let user = await Users.findOne({
-      email: req.body.email
-    });
-    
-    let token = JWT.encode(user, config.SECRET_KEY);
-    
-  } catch (err) {
-    err;
+    let token = JWT.sign(
+      {
+        email: req.body.email,
+        expiresIn: 6048
+      },
+      config.RESET_KEY
+    );
+
+    const msg = {
+      to: req.body.email,
+      from: 'scottjr632@gmail.com',
+      subject: 'Reset password link',
+      text: 'Follow link to reset password',
+      html: `<a href="https://${req.headers.host}/passwordreset?token=${token}">Reset link</a>`,
+    };
+
+    sgMail.send(msg);
+    return res.status(200).send(`Email sent to ${req.body.email}`)
+  } catch (error) {
+    return res.status(500).send(err)
+  }
+}
+
+exports.passwordReset = async function (req, res, next) {
+  const token = req.query.token;
+  let email = ""
+  try {
+    data  = JWT.decode(token, config.RESET_KEY)  
+    email = data.email
+  } catch (error) {
+    return res.status(500).send(error, "Invalid token.")
+  }
+
+  if (email && token && email === req.body.email) { 
+    return updatePassword(req, res, next)
+  } else {
+    return res.status(401).send("Unable to change password. Email is invalid.")
   }
 };
